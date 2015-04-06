@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="LibraTimeTrack" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ANDREI\SQLEXPRESS;Initial Catalog=LibraTimeTrack;Integrated Security=True" SettingsObjectName="LibraTimeTrack.Properties.Settings" SettingsPropertyName="LibraTimeTrackConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Activities" Member="Activities">
+    <Type Name="Activity">
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Month" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="MonthName" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="DayOfYear" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="DayOfMonth" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="WeekNo" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="WeekDay" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="DayOfWeek" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="PersonLogin" Type="System.String" DbType="Char(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NoHours" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Quarter" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="Item_Activity" Member="Item" ThisKey="ItemId" OtherKey="Id" Type="Item" IsForeignKey="true" />
+      <Association Name="Person_Activity" Member="Person" ThisKey="PersonLogin" OtherKey="Login" Type="Person" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Estimations" Member="Estimations">
+    <Type Name="Estimation">
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Month" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="MonthName" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="DayOfYear" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="DayOfMonth" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="WeekNo" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="WeekDay" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="DayOfWeek" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="PersonLogin" Type="System.String" DbType="Char(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NoHours" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Quarter" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="Item_Estimation" Member="Item" ThisKey="ItemId" OtherKey="Id" Type="Item" IsForeignKey="true" />
+      <Association Name="Person_Estimation" Member="Person" ThisKey="PersonLogin" OtherKey="Login" Type="Person" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Items" Member="Items">
+    <Type Name="Item">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RTId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PMId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Item_Activity" Member="Activities" ThisKey="Id" OtherKey="ItemId" Type="Activity" />
+      <Association Name="Item_Estimation" Member="Estimations" ThisKey="Id" OtherKey="ItemId" Type="Estimation" />
+      <Association Name="PM_Item" Member="PM" ThisKey="PMId" OtherKey="Id" Type="PM" IsForeignKey="true" />
+      <Association Name="RT_Item" Member="RT" ThisKey="RTId" OtherKey="Id" Type="RT" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ItemTypes" Member="ItemTypes">
+    <Type Name="ItemType">
+      <Column Name="ItemType" Member="Type" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="ItemType_PM" Member="PMs" ThisKey="Type" OtherKey="ItemType" Type="PM" />
+      <Association Name="ItemType_RT" Member="RTs" ThisKey="Type" OtherKey="ItemType" Type="RT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LoginHistory" Member="LoginHistories">
+    <Type Name="LoginHistory">
+      <Column Name="Login" Type="System.String" DbType="Char(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Person_LoginHistory" Member="Person" ThisKey="Login" OtherKey="Login" Type="Person" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Persons" Member="Persons">
+    <Type Name="Person">
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Login" Type="System.String" DbType="Char(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Person_Activity" Member="Activities" ThisKey="Login" OtherKey="PersonLogin" Type="Activity" />
+      <Association Name="Person_Estimation" Member="Estimations" ThisKey="Login" OtherKey="PersonLogin" Type="Estimation" />
+      <Association Name="Person_LoginHistory" Member="LoginHistories" ThisKey="Login" OtherKey="Login" Type="LoginHistory" />
+      <Association Name="Person_Teams2Person" Member="Teams2Persons" ThisKey="Login" OtherKey="Login" Type="Teams2Person" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PM" Member="PMs">
+    <Type Name="PM">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="Char(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ItemType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="QmId" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="PM_Item" Member="Items" ThisKey="Id" OtherKey="PMId" Type="Item" />
+      <Association Name="PM_PM2RT" Member="PM2RTs" ThisKey="Id" OtherKey="PMId" Type="PM2RT" />
+      <Association Name="ItemType_PM" Member="ItemType1" ThisKey="ItemType" OtherKey="Type" Type="ItemType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PM2RT" Member="PM2RTs">
+    <Type Name="PM2RT">
+      <Column Name="PMId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RTId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="PM_PM2RT" Member="PM" ThisKey="PMId" OtherKey="Id" Type="PM" IsForeignKey="true" />
+      <Association Name="RT_PM2RT" Member="RT" ThisKey="RTId" OtherKey="Id" Type="RT" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RT" Member="RTs">
+    <Type Name="RT">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="Char(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ItemType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="RT_Item" Member="Items" ThisKey="Id" OtherKey="RTId" Type="Item" />
+      <Association Name="RT_PM2RT" Member="PM2RTs" ThisKey="Id" OtherKey="RTId" Type="PM2RT" />
+      <Association Name="ItemType_RT" Member="ItemType1" ThisKey="ItemType" OtherKey="Type" Type="ItemType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Teams" Member="Teams">
+    <Type Name="Team">
+      <Column Name="Name" Type="System.String" DbType="Char(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Team_Teams2Person" Member="Teams2Persons" ThisKey="Name" OtherKey="Team" Type="Teams2Person" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Teams2Persons" Member="Teams2Persons">
+    <Type Name="Teams2Person">
+      <Column Name="Team" Type="System.String" DbType="Char(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Login" Type="System.String" DbType="Char(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Person_Teams2Person" Member="Person" ThisKey="Login" OtherKey="Login" Type="Person" IsForeignKey="true" />
+      <Association Name="Team_Teams2Person" Member="Team1" ThisKey="Team" OtherKey="Name" Type="Team" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.insertActivity" Method="insertActivity">
+    <Parameter Name="date" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="login" Type="System.String" DbType="Char(30)" />
+    <Parameter Name="hrs" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="item" Type="System.Int32" DbType="Int" />
+  </Function>
+  <Function Name="dbo.insertEstimation" Method="insertEstimation">
+    <Parameter Name="date" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="login" Type="System.String" DbType="Char(30)" />
+    <Parameter Name="hrs" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="item" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.insertPM" Method="insertPM">
+    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="ItemIdentity" Parameter="itemIdentity" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ItemType" Parameter="itemType" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="QmId" Parameter="qmId" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.insertRT" Method="insertRT">
+    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="ItemIdentity" Parameter="itemIdentity" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ItemType" Parameter="itemType" Type="System.Byte" DbType="TinyInt" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

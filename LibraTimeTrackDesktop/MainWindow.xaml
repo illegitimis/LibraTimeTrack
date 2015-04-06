@@ -1,0 +1,204 @@
+﻿<Window x:Class="LibraTimeTrack.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:src="clr-namespace:LibraTimeTrack"
+        xmlns:model="clr-namespace:LibraTimeTrack.Model"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="Libra Time Track" Height="600" Width="800" 
+        >
+
+  <Window.Resources>
+    <!--
+    RTNormalTemplate
+    RTShortlistedNoPMTemplate
+    PMNormalTemplate
+    PMMaintenanceTemplate
+    PMNothingTemplate
+    -->
+    <src:ItemDataTemplateSelector x:Key="itemTemplateSelector" />
+
+    <DataTemplate x:Key="RTNormalTemplate"  DataType="{x:Type model:Item}">
+      <Border BorderBrush="Green" BorderThickness="3" Background="LightGreen" Margin="2" Padding="3">
+        <StackPanel Orientation="Horizontal">
+          <Label Content="{Binding Path=InternalId}" />
+          <Label Content="{Binding Path=Name}" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="PMNormalTemplate"  DataType="{x:Type model:Item}">
+      <Border BorderBrush="Blue" BorderThickness="3" Background="LightBlue" Margin="2" Padding="3">
+        <StackPanel Orientation="Horizontal">
+          <Label Content="{Binding Path=InternalId}" />
+          <Label Content="{Binding Path=Name}" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="RTShortlistedNoPMTemplate" DataType="{x:Type model:Item}">
+      <Border BorderBrush="Yellow" BorderThickness="4" Background="LightYellow" Margin="2" Padding="5">
+        <StackPanel>
+          <Label Content="{Binding Path=InternalId}" />
+          <Label Content="{Binding Path=Name}" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PMMaintenanceTemplate" DataType="{x:Type model:Item}">
+      <Border BorderBrush="Red" BorderThickness="5" Background="LightCoral" Margin="2" Padding="5">
+        <StackPanel>
+          <Label Content="{Binding Path=InternalId}" />
+          <Label Content="{Binding Path=Name}" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PMNothingTemplate" DataType="{x:Type model:Item}">
+      <Border BorderBrush="Red" BorderThickness="5" Background="LightSalmon" Margin="2" Padding="5">
+        <StackPanel>
+          <Label Content="{Binding Path=InternalId}" />
+          <Label Content="{Binding Path=Name}" />
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <!--others-->
+    <src:PersonNameConverter x:Key="personNameConverter" />
+    <src:ItemNameConverter x:Key="itemNameConverter" />
+    
+    <DataTemplate x:Key="ActivityItemIdTemplate">
+      <TextBlock Text="{Binding Path=Item, Mode=OneWay, Converter={StaticResource itemNameConverter}}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="ActivityDateTemplate">
+      <TextBox Text="{Binding Date}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="EstimationLoginTemplate">
+      <TextBlock Text="{Binding Path=Person.Name}" />
+      <!--<TextBox Text="{Binding Path=Person, Mode=OneWay, Converter={StaticResource personNameConverter}}" />-->
+    </DataTemplate>
+
+    <DataTemplate x:Key="HoursTemplate">
+      <TextBox Text="{Binding NoHours}" />
+    </DataTemplate>
+
+  </Window.Resources>
+
+  <TabControl SelectedIndex="2">
+    <TabItem Header="Items" Name="tabItems" Loaded="tabItems_Loaded" Initialized="tabItems_Initialized">
+      <Grid>
+        <ListBox ItemsSource="{Binding}" ItemTemplateSelector="{StaticResource itemTemplateSelector}" />
+      </Grid>
+    </TabItem>
+
+    <!--activities-->       
+    <TabItem Header="Activity" Name="tabActivities" Loaded="tabActivities_Loaded" Initialized="tabActivities_Initialized" >
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="41*" />
+          <RowDefinition Height="466*" />
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="1" Margin="1,1,1,32" Name="listViewActivities" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" >
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+              <EventSetter Event="GotFocus" Handler="ItemGotFocus" />
+            </Style>
+          </ListView.ItemContainerStyle>
+          <ListView.View>
+            <GridView>
+              
+              <GridViewColumn Header="Date" Width="Auto" CellTemplate="{StaticResource ActivityDateTemplate}" />
+              
+              <GridViewColumn Header="Who" Width="Auto">
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBox Text="{Binding PersonLogin}" />
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+
+              <GridViewColumn Header="Item" Width="Auto" CellTemplate="{StaticResource ActivityItemIdTemplate}" />
+              
+              <GridViewColumn Header="No Hours" Width="Auto" >
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBox Text="{Binding NoHours}" />
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>
+             
+              <!--<GridViewColumn Header="City" Width="Auto" >
+                <GridViewColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBox Text="{Binding City}" />
+                  </DataTemplate>
+                </GridViewColumn.CellTemplate>
+              </GridViewColumn>-->
+              
+              <GridViewColumn DisplayMemberBinding="{Binding Weekday}" Header="Week day" Width="Auto" />
+              
+            </GridView>
+          </ListView.View>
+        </ListView>
+        <!--<Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="btnSave" VerticalAlignment="Top" Width="60" Click="btnSave_Click" />
+        <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="btnAdd" VerticalAlignment="Top" Width="60" Click="btnAdd_Click" />
+        <Button Content="Delete" Height="23" HorizontalAlignment="Left" Margin="138,6,0,0" Name="btnDel" VerticalAlignment="Top" Width="60" Click="btnDel_Click" />
+        <StatusBar Grid.Row="1" Height="23" HorizontalAlignment="Stretch" Margin="6" VerticalAlignment="Bottom">
+          <StatusBarItem Name="statusBarText"/>
+        </StatusBar>-->
+      </Grid>
+    </TabItem>
+
+    <!--estimations-->
+    <TabItem Header="Estimation" Name="tabEstimations" Loaded="tabActivities_Loaded" Initialized="tabActivities_Initialized" >
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="41*" />
+          <RowDefinition Height="466*" />
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="1" Margin="1,1,1,32" Name="listViewEstimations" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" >
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+              <EventSetter Event="GotFocus" Handler="ItemGotFocus" />
+            </Style>
+          </ListView.ItemContainerStyle>
+          <ListView.View>
+            <GridView>
+
+              <!--<GridViewColumn Header="Date" Width="Auto" CellTemplate="{StaticResource ActivityDateTemplate}" />-->
+              <GridViewColumn DisplayMemberBinding="{Binding Year}" Header="Year" Width="Auto" />
+              <GridViewColumn DisplayMemberBinding="{Binding MonthName}" Header="Month" Width="Auto" />
+              <GridViewColumn DisplayMemberBinding="{Binding DayOfMonth}" Header="Day" Width="Auto" />
+              <GridViewColumn DisplayMemberBinding="{Binding WeekDay}" Header="Week day" Width="Auto" />
+              
+              <GridViewColumn Header="Who" Width="Auto" CellTemplate="{StaticResource EstimationLoginTemplate}"   />
+              
+              <GridViewColumn Header="Item" Width="Auto" CellTemplate="{StaticResource ActivityItemIdTemplate}" />
+
+              <GridViewColumn Header="No Hours" Width="Auto" CellTemplate="{StaticResource HoursTemplate}" />
+
+            </GridView>
+          </ListView.View>
+        </ListView>
+        <Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="btnSave" VerticalAlignment="Top" Width="60" Click="btnSave_Click" />
+        <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="btnAdd" VerticalAlignment="Top" Width="60" Click="btnAdd_Click" />
+        <Button Content="Delete" Height="23" HorizontalAlignment="Left" Margin="138,6,0,0" Name="btnDel" VerticalAlignment="Top" Width="60" Click="btnDel_Click" />
+        <StatusBar Grid.Row="1" Height="23" HorizontalAlignment="Stretch" Margin="6" VerticalAlignment="Bottom">
+          <StatusBarItem Name="statusBarText"/>
+        </StatusBar>
+      </Grid>
+    </TabItem>
+    
+    <TabItem Header="auto complete" Name="TabTry">
+      <Grid>
+        
+      </Grid>
+    </TabItem>
+    
+  </TabControl>
+
+</Window>
