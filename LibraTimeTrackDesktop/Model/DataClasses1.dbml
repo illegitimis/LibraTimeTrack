@@ -37,6 +37,12 @@
       <Association Name="Item_Estimation" Member="Item" ThisKey="ItemId" OtherKey="Id" Type="Item" IsForeignKey="true" />
       <Association Name="Person_Estimation" Member="Person" ThisKey="PersonLogin" OtherKey="Login" Type="Person" IsForeignKey="true" />
     </Type>
+    <InsertFunction FunctionId="FunctionId1">
+      <Argument Parameter="date" Member="Date" />
+      <Argument Parameter="login" Member="PersonLogin" />
+      <Argument Parameter="hrs" Member="NoHours" />
+      <Argument Parameter="item" Member="ItemId" />
+    </InsertFunction>
   </Table>
   <Table Name="dbo.Items" Member="Items">
     <Type Name="Item">
@@ -121,13 +127,14 @@
       <Association Name="Team_Teams2Person" Member="Team1" ThisKey="Team" OtherKey="Name" Type="Team" IsForeignKey="true" />
     </Type>
   </Table>
-  <Function Name="dbo.insertActivity" Method="insertActivity">
+  <Function Name="dbo.insertActivity" Method="insertActivity" IsComposable="true">
     <Parameter Name="date" Type="System.DateTime" DbType="Date" />
     <Parameter Name="login" Type="System.String" DbType="Char(30)" />
     <Parameter Name="hrs" Type="System.Byte" DbType="TinyInt" />
     <Parameter Name="item" Type="System.Int32" DbType="Int" />
+    <Return Type="object" />
   </Function>
-  <Function Name="dbo.insertEstimation" Method="insertEstimation">
+  <Function Id="FunctionId1" Name="dbo.insertEstimation" Method="insertEstimation">
     <Parameter Name="date" Type="System.DateTime" DbType="Date" />
     <Parameter Name="login" Type="System.String" DbType="Char(30)" />
     <Parameter Name="hrs" Type="System.Byte" DbType="TinyInt" />

@@ -56,4 +56,28 @@ namespace LibraTimeTrack
         : null;
     }
   }
+
+  [ValueConversion(typeof(System.DateTime), typeof(string))]
+  public class DateConverter : IValueConverter
+  {
+    // Converts a Percent value to a new height value.
+    // The data binding engine calls this method when
+    // it propagates a value from the binding source to the binding target.
+    public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
+    {
+      return targetType == typeof(string)
+        //? ((System.DateTime)value).ToShortDateString()
+        ? ((System.DateTime)value).ToString("yy-MM-dd")
+        : null;
+    }
+    // Converts a value. The data binding engine calls this
+    // method when it propagates a value from the binding
+    // target to the binding source.
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+      return targetType == typeof(DateTime)
+        ? DateTime.ParseExact(value as string, "yy-MM-dd", CultureInfo.InvariantCulture)
+        : DateTime.MinValue;
+    }
+  }
 }

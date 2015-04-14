@@ -1,11 +1,10 @@
 ﻿<Window x:Class="LibraTimeTrack.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:m="clr-namespace:LibraTimeTrack.Model"
         xmlns:src="clr-namespace:LibraTimeTrack"
-        xmlns:model="clr-namespace:LibraTimeTrack.Model"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="Libra Time Track" Height="600" Width="800" 
-        >
+        Title="Libra Time Track" Height="600" Width="800">
 
   <Window.Resources>
     <!--
@@ -17,7 +16,7 @@
     -->
     <src:ItemDataTemplateSelector x:Key="itemTemplateSelector" />
 
-    <DataTemplate x:Key="RTNormalTemplate"  DataType="{x:Type model:Item}">
+    <DataTemplate x:Key="RTNormalTemplate"  DataType="{x:Type m:Item}">
       <Border BorderBrush="Green" BorderThickness="3" Background="LightGreen" Margin="2" Padding="3">
         <StackPanel Orientation="Horizontal">
           <Label Content="{Binding Path=InternalId}" />
@@ -25,7 +24,7 @@
         </StackPanel>
       </Border>
     </DataTemplate>
-    <DataTemplate x:Key="PMNormalTemplate"  DataType="{x:Type model:Item}">
+    <DataTemplate x:Key="PMNormalTemplate"  DataType="{x:Type m:Item}">
       <Border BorderBrush="Blue" BorderThickness="3" Background="LightBlue" Margin="2" Padding="3">
         <StackPanel Orientation="Horizontal">
           <Label Content="{Binding Path=InternalId}" />
@@ -34,7 +33,7 @@
       </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="RTShortlistedNoPMTemplate" DataType="{x:Type model:Item}">
+    <DataTemplate x:Key="RTShortlistedNoPMTemplate" DataType="{x:Type m:Item}">
       <Border BorderBrush="Yellow" BorderThickness="4" Background="LightYellow" Margin="2" Padding="5">
         <StackPanel>
           <Label Content="{Binding Path=InternalId}" />
@@ -43,7 +42,7 @@
       </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="PMMaintenanceTemplate" DataType="{x:Type model:Item}">
+    <DataTemplate x:Key="PMMaintenanceTemplate" DataType="{x:Type m:Item}">
       <Border BorderBrush="Red" BorderThickness="5" Background="LightCoral" Margin="2" Padding="5">
         <StackPanel>
           <Label Content="{Binding Path=InternalId}" />
@@ -52,7 +51,7 @@
       </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="PMNothingTemplate" DataType="{x:Type model:Item}">
+    <DataTemplate x:Key="PMNothingTemplate" DataType="{x:Type m:Item}">
       <Border BorderBrush="Red" BorderThickness="5" Background="LightSalmon" Margin="2" Padding="5">
         <StackPanel>
           <Label Content="{Binding Path=InternalId}" />
@@ -64,6 +63,7 @@
     <!--others-->
     <src:PersonNameConverter x:Key="personNameConverter" />
     <src:ItemNameConverter x:Key="itemNameConverter" />
+    <src:DateConverter x:Key="dateConverter" />
     
     <DataTemplate x:Key="ActivityItemIdTemplate">
       <TextBlock Text="{Binding Path=Item, Mode=OneWay, Converter={StaticResource itemNameConverter}}" />
@@ -73,9 +73,13 @@
       <TextBox Text="{Binding Date}" />
     </DataTemplate>
 
+    <DataTemplate x:Key="EstimationDateTemplate">
+      <TextBox Text="{Binding Path=Date, Mode=TwoWay, Converter={StaticResource dateConverter}}" />
+    </DataTemplate>
+    
     <DataTemplate x:Key="EstimationLoginTemplate">
-      <TextBlock Text="{Binding Path=Person.Name}" />
-      <!--<TextBox Text="{Binding Path=Person, Mode=OneWay, Converter={StaticResource personNameConverter}}" />-->
+      <!--<TextBlock Text="{Binding Path=Person.Name}" /> -->
+      <TextBlock Text="{Binding Path=Person, Mode=OneWay, Converter={StaticResource personNameConverter}}" />
     </DataTemplate>
 
     <DataTemplate x:Key="HoursTemplate">
@@ -152,7 +156,7 @@
     </TabItem>
 
     <!--estimations-->
-    <TabItem Header="Estimation" Name="tabEstimations" Loaded="tabActivities_Loaded" Initialized="tabActivities_Initialized" >
+    <TabItem Header="Estimation" Name="tabEstimations" Loaded="tabActivities_Loaded" Initialized="tabActivities_Initialized" GotFocus="tabEstimations_GotFocus" >
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="41*" />
@@ -174,11 +178,10 @@
               <GridViewColumn DisplayMemberBinding="{Binding MonthName}" Header="Month" Width="Auto" />
               <GridViewColumn DisplayMemberBinding="{Binding DayOfMonth}" Header="Day" Width="Auto" />
               <GridViewColumn DisplayMemberBinding="{Binding WeekDay}" Header="Week day" Width="Auto" />
-              
-              <GridViewColumn Header="Who" Width="Auto" CellTemplate="{StaticResource EstimationLoginTemplate}"   />
-              
-              <GridViewColumn Header="Item" Width="Auto" CellTemplate="{StaticResource ActivityItemIdTemplate}" />
 
+              <GridViewColumn Header="Date" Width="Auto" CellTemplate="{StaticResource EstimationDateTemplate}"   />
+              <GridViewColumn Header="Who" Width="Auto" CellTemplate="{StaticResource EstimationLoginTemplate}"   />
+              <GridViewColumn Header="Item" Width="Auto" CellTemplate="{StaticResource ActivityItemIdTemplate}" />
               <GridViewColumn Header="No Hours" Width="Auto" CellTemplate="{StaticResource HoursTemplate}" />
 
             </GridView>
@@ -198,7 +201,18 @@
         
       </Grid>
     </TabItem>
-    
+
+    <TabItem Header="combos" Name="TabCombos" Loaded="TabCombos_Loaded">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="1*" />
+          <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <ComboBox ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" Grid.Row="0" Name="cmb1" DisplayMemberPath="Name"/>
+        <ComboBox ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" Name="cmb2" DisplayMemberPath="Name"/>
+      </Grid>
+    </TabItem>
+
   </TabControl>
 
 </Window>

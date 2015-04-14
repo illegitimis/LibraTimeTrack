@@ -56,3 +56,22 @@ Temporary Items
 
 *.suo
 *.user
+*.exe
+*.pdb
+LibraTimeTrackDesktop/obj/Debug/App.g.cs
+LibraTimeTrackDesktop/obj/Debug/App.g.i.cs
+LibraTimeTrackDesktop/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+LibraTimeTrackDesktop/obj/Debug/MainWindow.g.cs
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack_MarkupCompile.lref
+LibraTimeTrackDesktop/obj/Debug/MainWindow.baml
+LibraTimeTrackDesktop/obj/Debug/GeneratedInternalTypeHelper.g.cs
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack.csproj.GenerateResource.Cache
+LibraTimeTrackDesktop/obj/Debug/GeneratedInternalTypeHelper.g.i.cs
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack.Properties.Resources.resources
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack.csprojResolveAssemblyReference.cache
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack.csproj.FileListAbsolute.txt
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack_MarkupCompile.i.cache
+LibraTimeTrackDesktop/obj/Debug/MainWindow.g.i.cs
+LibraTimeTrackDesktop/bin/Debug/LibraTimeTrack.exe.config
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack.g.resources
+LibraTimeTrackDesktop/obj/Debug/LibraTimeTrack_MarkupCompile.cache

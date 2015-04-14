@@ -93,27 +93,41 @@ namespace LibraTimeTrack
     {
       if (this.blcvActivities.CanAddNew)
       {
-        //var c = (Model.Customer)this.blcv.AddNew();
-        //c.CustomerID = GenerateCustomerKey();
-        //c.ContactName = "<new>";
-        //c.ContactTitle = "<new>";
-        //c.CompanyName = "<new>";
-        //// add validation
-        //this.blcv.CommitNew();
-        //this.listView1.ScrollIntoView(c);
+        var est = (Model.Estimation)this.blcvEstimations.AddNew();
+        est.Date = System.DateTime.UtcNow;
+        est.Item = DataSourceManager.Instance.DC.Items.First();
+        est.Person = DataSourceManager.Instance.DC.Persons.First();
+        est.NoHours = 0;
+        
+        // add validation
+        this.blcvEstimations.CommitNew();
+        this.listViewEstimations.ScrollIntoView(est);
       }
     }
 
     private void btnDel_Click(object sender, RoutedEventArgs e)
     {
-      if (this.blcvActivities.CurrentPosition > -1)
-        this.blcvActivities.RemoveAt(this.blcvActivities.CurrentPosition);
+      if (this.blcvEstimations.CurrentPosition > -1)
+        this.blcvEstimations.RemoveAt(this.blcvEstimations.CurrentPosition);
     }
 
     private void ItemGotFocus(object sender, RoutedEventArgs e)
     {
       var lvi = sender as ListViewItem;
       this.listViewActivities.SelectedItem = lvi.DataContext;
+    }
+
+    private void TabCombos_Loaded(object sender, RoutedEventArgs e)
+    {
+      this.cmb1.DataContext = DataSourceManager.Instance.DC.Persons;
+      this.cmb2.DataContext = DataSourceManager.Instance.DC.Items;
+    }
+
+    private void tabEstimations_GotFocus(object sender, RoutedEventArgs e)
+    {
+      //DataSourceManager.Instance.DC.GetChangeSet();
+      //DataSourceManager.Instance.DC.Refresh(System.Data.Linq.RefreshMode.)
+      this.listViewEstimations.UpdateLayout();
     }
   
    

@@ -33,7 +33,6 @@ namespace LibraTimeTrack.Model
     partial void InsertActivity(Activity instance);
     partial void UpdateActivity(Activity instance);
     partial void DeleteActivity(Activity instance);
-    partial void InsertEstimation(Estimation instance);
     partial void UpdateEstimation(Estimation instance);
     partial void DeleteEstimation(Estimation instance);
     partial void InsertItem(Item instance);
@@ -183,10 +182,15 @@ namespace LibraTimeTrack.Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.insertActivity")]
-		public void insertActivity([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> date, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Char(30)")] string login, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="TinyInt")] System.Nullable<byte> hrs, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> item)
+		private void InsertEstimation(Estimation obj)
 		{
-			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), date, login, hrs, item);
+			this.insertEstimation(((System.Nullable<System.DateTime>)(obj.Date)), obj.PersonLogin, ((System.Nullable<byte>)(obj.NoHours)), ((System.Nullable<int>)(obj.ItemId)));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.insertActivity", IsComposable=true)]
+		public object insertActivity([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> date, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Char(30)")] string login, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="TinyInt")] System.Nullable<byte> hrs, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> item)
+		{
+			return ((object)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), date, login, hrs, item).ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.insertEstimation")]
